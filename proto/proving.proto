@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package proving;
+
+enum TaskType {
+  RISCV = 0;
+  COMBINE = 1;
+  COMPRESS = 2;
+  EMBED = 3;
+}
+
+message WorkerInfo {
+  string name = 1;
+  string ip = 2;
+}
+
+message ProofTask {
+  string id = 1;
+  TaskType task_type = 2;
+  uint64 chunk_index = 3;
+  optional bytes record = 4;
+  optional bool flag_complete = 5;
+  repeated bytes proofs = 6;
+}
+
+message ProofResult {
+  string id = 1;
+  TaskType task_type = 2;
+  uint64 chunk_index = 3;
+  bytes proof = 4;
+}

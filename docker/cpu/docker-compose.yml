@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  server:
+    image: pico-proving-service-cpu:latest
+    container_name: pico-proving-service-cpu
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    env_file:
+      - .env
+    environment:
+      # Force sidecar mode for docker deployments
+      GNARK_SIDECAR_MODE: "true"
+      GNARK_URL: "http://gnark:9099"
+    ports:
+      - "${GRPC_PORT:-50052}:50052"
+    volumes:
+      - ../data:/app/data
+      - ../gnark_downloads:/app/gnark_downloads:ro
+    restart: unless-stopped
+    networks:
+      - proving-network
+    depends_on:
+      gnark:
+        condition: service_started
+
+  gnark:
+    image: brevishub/pico_gnark_server:1.1
+    container_name: pico-gnark-server
+    command: ["-field", "kb"]
+    volumes:
+      - ../gnark_downloads/kb:/data:ro
+    ports:
+      - "9099:9099"
+    restart: unless-stopped
+    networks:
+      - proving-network
+    healthcheck:
+      test: ["CMD-SHELL", "wget --spider --quiet http://localhost:9099/ready || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+networks:
+  proving-network:
+    driver: bridge

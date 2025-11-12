@@ -1,0 +1,93 @@
+[package]
+name = "pico-proving-service"
+version = "0.1.0"
+edition = "2024"
+
+[[bin]]
+name = "gen-app-id"
+path = "bin/gen_app_id.rs"
+
+[[bin]]
+name = "gen-reth-inputs"
+path = "bin/gen_reth_inputs.rs"
+
+[[bin]]
+name = "gen-common-pv-digest"
+path = "bin/gen_common_pv_digest.rs"
+
+[[bin]]
+name = "gen-input-example"
+path = "bin/gen_input_example.rs"
+
+[[bin]]
+name = "server"
+path = "bin/server.rs"
+
+[[bin]]
+name = "test-client"
+path = "bin/test_client.rs"
+
+[dependencies]
+# pico
+pico-vm = { git = "https://github.com/brevis-network/pico.git", features = ["jemalloc", "nightly-features"], branch = "prover-network" }
+pico-perf = { git = "https://github.com/brevis-network/pico.git", branch = "prover-network" }
+
+# rsp
+rsp-host-executor = { git = "https://github.com/brevis-network/rsp.git", features = ["execution-witness"], rev = "5b3ab06" }
+rsp-primitives = { git = "https://github.com/brevis-network/rsp.git", rev = "5b3ab06" }
+rsp-provider = { git = "https://github.com/brevis-network/rsp.git", rev = "5b3ab06" }
+
+
+# p3
+# NOTE: Pin to known a "good" commit without recent API changes
+p3-commit = { git = "https://github.com/brevis-network/Plonky3.git", rev = "a4d376b" }
+p3-field = { git = "https://github.com/brevis-network/Plonky3.git", rev = "a4d376b" }
+p3-symmetric = { git = "https://github.com/brevis-network/Plonky3.git", rev = "a4d376b" }
+p3-koala-bear = { git = "https://github.com/brevis-network/Plonky3.git", features = [
+    "nightly-features",
+], rev = "a4d376b" }
+
+# misc
+alloy-primitives = { version = "1.3", default-features = false }
+anyhow = { version = "1.0", default-features = false }
+base64 = "0.22"
+bincode = "1.3"
+clap = { version = "4.5", features = ["derive", "env"] }
+crossbeam = "0.8"
+dashmap = "6.1"
+derive_more = { version = "2.0", features = ["constructor"] }
+dotenvy = "0.15"
+futures = "0.3"
+hex = "0.4"
+log = "0.4.21"
+num_cpus = "1.16"
+prost = "0.13"
+rand = "0.8"
+serde = { version = "1.0.205", features = ["derive", "rc"] }
+sha2 = "0.10"
+sqlx = { version = "0.8", features = ["runtime-tokio", "sqlite", "macros"] }
+thiserror = "2.0"
+tokio = { version = "1.0", features = ["macros", "rt-multi-thread", "signal"] }
+tonic = { version = "0.13", features = ["zstd"] }
+tonic-web = "0.13"
+tower = "0.5"
+tower-http = { version = "0.5", features = ["full"] }
+tracing = "0.1"
+url = "2.3"
+
+[build-dependencies]
+tonic-build = { version = "0.13", features = ["prost"] }
+
+[patch.crates-io]
+# revm
+revm = { git = "https://github.com/brevis-network/revm.git", branch = "pico" }
+revm-bytecode = { git = "https://github.com/brevis-network/revm.git", branch = "pico" }
+revm-context = { git = "https://github.com/brevis-network/revm.git", branch = "pico" }
+revm-database = { git = "https://github.com/brevis-network/revm.git", branch = "pico" }
+revm-database-interface = { git = "https://github.com/brevis-network/revm.git", branch = "pico" }
+revm-handler = { git = "https://github.com/brevis-network/revm.git", branch = "pico" }
+revm-inspector = { git = "https://github.com/brevis-network/revm.git", branch = "pico" }
+revm-interpreter = { git = "https://github.com/brevis-network/revm.git", branch = "pico" }
+revm-precompile = { git = "https://github.com/brevis-network/revm.git", branch = "pico" }
+revm-primitives = { git = "https://github.com/brevis-network/revm.git", branch = "pico" }
+revm-state = { git = "https://github.com/brevis-network/revm.git", branch = "pico" }
