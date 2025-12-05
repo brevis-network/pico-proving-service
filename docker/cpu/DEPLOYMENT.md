@@ -81,8 +81,8 @@ Edit `.env` to customize:
 |----------|---------|-------------|
 | `GRPC_ADDR` | `0.0.0.0:50052` | gRPC listen address |
 | `PROVER_COUNT` | `32` | Number of CPU provers |
-| `CHUNK_SIZE` | `2097152` | Proof chunk size |
-| `CHUNK_BATCH_SIZE` | `32` | Chunk batch size |
+| `CHUNK_SIZE` | `4194304` | Proof chunk size |
+| `CHUNK_BATCH_SIZE` | `1` | Chunk batch size |
 | `SPLIT_THRESHOLD` | `1048576` | Split threshold |
 | `NUM_THREADS` | `8` | CPU worker threads |
 | `RUST_LOG` | `debug` | Log level |

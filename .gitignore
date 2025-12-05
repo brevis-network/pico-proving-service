@@ -18,9 +18,6 @@ target
 .vscode/
 *.swp
 
-# Environment variables file
-.env
-
 # SQLite database file
 *.db
 

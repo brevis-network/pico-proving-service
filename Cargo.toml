@@ -20,6 +20,10 @@ name = "gen-input-example"
 path = "bin/gen_input_example.rs"
 
 [[bin]]
+name = "normalize-reth-inputs"
+path = "bin/normalize_reth_inputs.rs"
+
+[[bin]]
 name = "server"
 path = "bin/server.rs"
 
@@ -27,16 +31,20 @@ path = "bin/server.rs"
 name = "test-client"
 path = "bin/test_client.rs"
 
+[[bin]]
+name = "test-reth-prove"
+path = "bin/test_reth_prove.rs"
+
 [dependencies]
 # pico
 pico-vm = { git = "https://github.com/brevis-network/pico.git", features = ["jemalloc", "nightly-features"], tag = "v1.1.8" }
 pico-perf = { git = "https://github.com/brevis-network/pico.git", tag = "v1.1.8" }
 
 # rsp
-rsp-host-executor = { git = "https://github.com/brevis-network/rsp.git", features = ["execution-witness"], rev = "5b3ab06" }
-rsp-primitives = { git = "https://github.com/brevis-network/rsp.git", rev = "5b3ab06" }
-rsp-provider = { git = "https://github.com/brevis-network/rsp.git", rev = "5b3ab06" }
-
+rsp-client-executor = { git = "https://github.com/brevis-network/rsp.git", rev = "a005ee4" }
+rsp-host-executor = { git = "https://github.com/brevis-network/rsp.git", features = ["execution-witness"], rev = "a005ee4" }
+rsp-primitives = { git = "https://github.com/brevis-network/rsp.git", rev = "a005ee4" }
+rsp-provider = { git = "https://github.com/brevis-network/rsp.git", rev = "a005ee4" }
 
 # p3
 # NOTE: Pin to known a "good" commit without recent API changes
@@ -47,8 +55,12 @@ p3-koala-bear = { git = "https://github.com/brevis-network/Plonky3.git", feature
     "nightly-features",
 ], rev = "a4d376b" }
 
+# alloy
+alloy-chains = { version = "0.2.17", default-features = false }
+alloy-primitives = { version = "1.4.1", default-features = false }
+alloy-provider = { version = "1.1.0", default-features = false, features = ["reqwest", "reqwest-rustls-tls", "ws"] }
+
 # misc
-alloy-primitives = { version = "1.3", default-features = false }
 anyhow = { version = "1.0", default-features = false }
 base64 = "0.22"
 bincode = "1.3"
@@ -79,15 +91,15 @@ url = "2.3"
 tonic-build = { version = "0.13", features = ["prost"] }
 
 [patch.crates-io]
-# revm
-revm = { git = "https://github.com/brevis-network/revm.git", branch = "pico" }
-revm-bytecode = { git = "https://github.com/brevis-network/revm.git", branch = "pico" }
-revm-context = { git = "https://github.com/brevis-network/revm.git", branch = "pico" }
-revm-database = { git = "https://github.com/brevis-network/revm.git", branch = "pico" }
-revm-database-interface = { git = "https://github.com/brevis-network/revm.git", branch = "pico" }
-revm-handler = { git = "https://github.com/brevis-network/revm.git", branch = "pico" }
-revm-inspector = { git = "https://github.com/brevis-network/revm.git", branch = "pico" }
-revm-interpreter = { git = "https://github.com/brevis-network/revm.git", branch = "pico" }
-revm-precompile = { git = "https://github.com/brevis-network/revm.git", branch = "pico" }
-revm-primitives = { git = "https://github.com/brevis-network/revm.git", branch = "pico" }
-revm-state = { git = "https://github.com/brevis-network/revm.git", branch = "pico" }
+# revm patches
+revm = { git = "https://github.com/brevis-network/revm", branch = "pico-v97-31-0-1" }
+revm-bytecode = { git = "https://github.com/brevis-network/revm", branch = "pico-v97-31-0-1" }
+revm-context = { git = "https://github.com/brevis-network/revm", branch = "pico-v97-31-0-1" }
+revm-database = { git = "https://github.com/brevis-network/revm", branch = "pico-v97-31-0-1" }
+revm-database-interface = { git = "https://github.com/brevis-network/revm", branch = "pico-v97-31-0-1" }
+revm-handler = { git = "https://github.com/brevis-network/revm", branch = "pico-v97-31-0-1" }
+revm-inspector = { git = "https://github.com/brevis-network/revm", branch = "pico-v97-31-0-1" }
+revm-interpreter = { git = "https://github.com/brevis-network/revm", branch = "pico-v97-31-0-1" }
+revm-precompile = { git = "https://github.com/brevis-network/revm", branch = "pico-v97-31-0-1" }
+revm-primitives = { git = "https://github.com/brevis-network/revm", branch = "pico-v97-31-0-1" }
+revm-state = { git = "https://github.com/brevis-network/revm", branch = "pico-v97-31-0-1" }

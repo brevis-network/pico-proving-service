@@ -94,7 +94,8 @@ Edit `.env` to customize:
 |----------|---------|-------------|
 | `GRPC_ADDR` | `0.0.0.0:50052` | gRPC listen address |
 | `PROVER_COUNT` | `1` | Number of GPU provers |
-| `CHUNK_SIZE` | `2097152` | Proof chunk size |
+| `CHUNK_SIZE` | `4194304` | Proof chunk size |
+| `CHUNK_BATCH_SIZE` | `1` | Chunk batch size |
 | `NUM_THREADS` | `6` | CPU worker threads |
 | `RUST_LOG` | `info` | Log level |
 
