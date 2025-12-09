@@ -17,9 +17,9 @@ PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 GNARK_DIR="${PROJECT_ROOT}/gnark_downloads/kb"
 
 # S3 URLs
-VM_CCS_URL="https://picobench.s3.us-west-2.amazonaws.com/koalabear_gnark/gpu/vm_ccs"
-VM_PK_URL="https://picobench.s3.us-west-2.amazonaws.com/koalabear_gnark/gpu/vm_pk"
-VM_VK_URL="https://picobench.s3.us-west-2.amazonaws.com/koalabear_gnark/gpu/vm_vk"
+VM_CCS_URL="https://pico-proofs.s3.us-west-2.amazonaws.com/gnarkfiles/v1-2-2/vk-true/vm_ccs"
+VM_PK_URL="https://pico-proofs.s3.us-west-2.amazonaws.com/gnarkfiles/v1-2-2/vk-true/vm_pk"
+VM_VK_URL="https://pico-proofs.s3.us-west-2.amazonaws.com/gnarkfiles/v1-2-2/vk-true/vm_vk"
 
 echo -e "${GREEN}==================================================${NC}"
 echo -e "${GREEN}  Downloading gnark verification files${NC}"

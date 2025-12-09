@@ -36,7 +36,7 @@ services:
         condition: service_started
 
   gnark:
-    image: brevishub/pico_gnark_server:1.1
+    image: brevishub/pico_gnark_server:1.2
     container_name: pico-gnark-server
     command: ["-field", "kb"]
     volumes:
