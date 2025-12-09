@@ -246,9 +246,29 @@ RUST_LOG=debug cargo run -r --bin normalize-reth-inputs -- --input rsp_reth_inpu
 ```
 RUST_LOG=debug VK_VERIFICATION=true cargo run -r --bin test-reth-prove -- --rpc-http-url DEBUG_RPC_URL --rpc-ws-url WS_RPC_URL (--use-gpu)
 ```
-```
+
 ## Test on-chain
 
 The Groth16 Verifier contract has been deployed on Sepolia. It can be used for testing the final proof verification.  
 
-[View contract on Sepolia](https://sepolia.arbiscan.io/address/0x2a05cF897DABE411FE73b98e63ea73c316580cF9#readContract)
+### VK_VERIFICATION=true
+
+Download gnark files:
+```
+wget https://pico-proofs.s3.us-west-2.amazonaws.com/vk-true-gnarkfiles-kb/vm_ccs
+wget https://pico-proofs.s3.us-west-2.amazonaws.com/vk-true-gnarkfiles-kb/vm_pk
+wget https://pico-proofs.s3.us-west-2.amazonaws.com/vk-true-gnarkfiles-kb/vm_vk
+```
+
+[Use Sepolia contract](https://sepolia.etherscan.io/address/0x41fa4377915ff3B857035961c9c246A718C9Af61#readContract)
+
+### VK_VERIFICATION=false
+
+Download gnark files:
+```
+wget https://pico-proofs.s3.us-west-2.amazonaws.com/vk-false-gnarkfiles/vm_ccs
+wget https://pico-proofs.s3.us-west-2.amazonaws.com/vk-false-gnarkfiles/vm_pk
+wget https://pico-proofs.s3.us-west-2.amazonaws.com/vk-false-gnarkfiles/vm_vk
+```
+
+[Use Sepolia contract](https://sepolia.etherscan.io/address/0x82248B6f903459FaDD7470A39E531792930708c4#readContract)
