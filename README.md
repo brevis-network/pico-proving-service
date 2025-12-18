@@ -249,26 +249,26 @@ RUST_LOG=debug VK_VERIFICATION=true cargo run -r --bin test-reth-prove -- --rpc-
 
 ## Test on-chain
 
-The Groth16 Verifier contract has been deployed on Sepolia. It can be used for testing the final proof verification.  
+The Groth16 Verifier contract has been deployed on Sepolia. It can be used for testing the final proof verification.
 
 ### VK_VERIFICATION=true
 
 Download gnark files:
 ```
-wget https://pico-proofs.s3.us-west-2.amazonaws.com/vk-true-gnarkfiles-kb/vm_ccs
-wget https://pico-proofs.s3.us-west-2.amazonaws.com/vk-true-gnarkfiles-kb/vm_pk
-wget https://pico-proofs.s3.us-west-2.amazonaws.com/vk-true-gnarkfiles-kb/vm_vk
+wget https://pico-proofs.s3.us-west-2.amazonaws.com/gnarkfiles/v1-2-1/vk-true/vm_ccs
+wget https://pico-proofs.s3.us-west-2.amazonaws.com/gnarkfiles/v1-2-1/vk-true/vm_pk
+wget https://pico-proofs.s3.us-west-2.amazonaws.com/gnarkfiles/v1-2-1/vk-true/vm_vk
 ```
 
-[Use Sepolia contract](https://sepolia.etherscan.io/address/0x41fa4377915ff3B857035961c9c246A718C9Af61#readContract)
+[Use Sepolia contract](https://sepolia.etherscan.io/address/0xE2D8a0ad8b8edf9942BF3081f62361Bf691c1cE6#readContract)
 
 ### VK_VERIFICATION=false
 
 Download gnark files:
 ```
-wget https://pico-proofs.s3.us-west-2.amazonaws.com/vk-false-gnarkfiles/vm_ccs
-wget https://pico-proofs.s3.us-west-2.amazonaws.com/vk-false-gnarkfiles/vm_pk
-wget https://pico-proofs.s3.us-west-2.amazonaws.com/vk-false-gnarkfiles/vm_vk
+wget https://pico-proofs.s3.us-west-2.amazonaws.com/gnarkfiles/v1-2-1/vk-false/vm_ccs
+wget https://pico-proofs.s3.us-west-2.amazonaws.com/gnarkfiles/v1-2-1/vk-false/vm_pk
+wget https://pico-proofs.s3.us-west-2.amazonaws.com/gnarkfiles/v1-2-1/vk-false/vm_vk
 ```
 
 [Use Sepolia contract](https://sepolia.etherscan.io/address/0x82248B6f903459FaDD7470A39E531792930708c4#readContract)
