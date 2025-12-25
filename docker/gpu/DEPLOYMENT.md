@@ -98,6 +98,25 @@ Edit `.env` to customize:
 | `CHUNK_BATCH_SIZE` | `1` | Chunk batch size |
 | `NUM_THREADS` | `6` | CPU worker threads |
 | `RUST_LOG` | `info` | Log level |
+| `SPLIT_THRESHOLD` | 32768 | Proving chunk split threshold |
+| `MEM_POOL_RESERVE_SIZE` | 29000000000 | GPU memory pool reserve size |
+| `PICO_GPU_MEM` | 5090 | GPU memory spec |
+
+Recommended settings for RTX `5090`:
+```
+SPLIT_THRESHOLD=32768
+CHUNK_SIZE=2097152
+MEM_POOL_RESERVE_SIZE=29000000000
+PICO_GPU_MEM=5090
+```
+
+Recommended setting for RTX `4090`:
+```
+SPLIT_THRESHOLD=16384
+CHUNK_SIZE=1048576
+MEM_POOL_RESERVE_SIZE=21000000000
+PICO_GPU_MEM=4090
+```
 
 See `env.example` for all options.
 

@@ -37,8 +37,8 @@ path = "bin/test_reth_prove.rs"
 
 [dependencies]
 # pico
-pico-vm = { git = "https://github.com/brevis-network/pico.git", features = ["jemalloc", "nightly-features"], tag = "v1.1.8" }
-pico-perf = { git = "https://github.com/brevis-network/pico.git", tag = "v1.1.8" }
+pico-vm = { git = "https://github.com/brevis-network/pico.git", features = ["jemalloc", "nightly-features"], tag = "v1.2.2" }
+pico-perf = { git = "https://github.com/brevis-network/pico.git", tag = "v1.2.2" }
 
 # rsp
 rsp-client-executor = { git = "https://github.com/brevis-network/rsp.git", rev = "a005ee4" }
@@ -48,12 +48,12 @@ rsp-provider = { git = "https://github.com/brevis-network/rsp.git", rev = "a005e
 
 # p3
 # NOTE: Pin to known a "good" commit without recent API changes
-p3-commit = { git = "https://github.com/brevis-network/Plonky3.git", rev = "a4d376b" }
-p3-field = { git = "https://github.com/brevis-network/Plonky3.git", rev = "a4d376b" }
-p3-symmetric = { git = "https://github.com/brevis-network/Plonky3.git", rev = "a4d376b" }
+p3-commit = { git = "https://github.com/brevis-network/Plonky3.git", rev = "411a80d" }
+p3-field = { git = "https://github.com/brevis-network/Plonky3.git", rev = "411a80d" }
+p3-symmetric = { git = "https://github.com/brevis-network/Plonky3.git", rev = "411a80d" }
 p3-koala-bear = { git = "https://github.com/brevis-network/Plonky3.git", features = [
     "nightly-features",
-], rev = "a4d376b" }
+], rev = "411a80d" }
 
 # alloy
 alloy-chains = { version = "0.2.17", default-features = false }
