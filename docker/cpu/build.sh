@@ -68,6 +68,7 @@ cd "$PROJECT_ROOT"
 
 docker build \
     $NO_CACHE \
+    --ulimit nofile=1048576:1048576 \
     -t "${IMAGE_NAME}:${IMAGE_TAG}" \
     -f docker/cpu/Dockerfile \
     .
