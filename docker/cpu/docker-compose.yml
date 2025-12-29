@@ -5,8 +5,8 @@ services:
     image: pico-proving-service-cpu:latest
     container_name: pico-proving-service-cpu
     build:
-      context: ..
-      dockerfile: docker/Dockerfile
+      context: ../..
+      dockerfile: docker/cpu/Dockerfile
     env_file:
       - .env
     environment:

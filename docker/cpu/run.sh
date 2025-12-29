@@ -35,14 +35,14 @@ fi
 # Setup environment
 if [ ! -f .env ]; then
     echo -e "${YELLOW}No .env file found. Creating from template...${NC}"
-    if [ -f env.example ]; then
-        cp env.example .env
+    if [ -f .env.example ]; then
+        cp .env.example .env
         echo -e "${GREEN}Created .env file from template${NC}"
         echo -e "${YELLOW}Please review and edit .env before starting the service${NC}"
         echo ""
         read -p "Press Enter to continue after editing .env..."
     else
-        echo -e "${RED}Error: env.example not found${NC}"
+        echo -e "${RED}Error: .env.example not found${NC}"
         exit 1
     fi
 fi

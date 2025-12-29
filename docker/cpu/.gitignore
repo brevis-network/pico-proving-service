@@ -1,0 +1,14 @@
+# Environment configuration
+.env
+
+# Docker volumes and data
+data/
+*.db
+
+# Build artifacts
+*.tar
+*.tar.gz
+
+# Logs
+*.log
+

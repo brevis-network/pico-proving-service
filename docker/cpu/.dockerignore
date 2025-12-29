@@ -1,0 +1,52 @@
+# Git
+.git
+.gitignore
+
+# Docker
+docker/
+Dockerfile*
+docker-compose*.yml
+
+# Build artifacts
+target/
+debug/
+*.db
+
+# Logs
+*.log
+server*.log
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# Temporary files
+tmp/
+
+# Documentation (not needed in image)
+*.md
+!README.md
+
+# Test files
+fixtures/
+!fixtures/model.json
+
+# Exclude large directories from brevis-vm that are not needed
+brevis-vm/bench-scripts/
+brevis-vm/docs/
+brevis-vm/examples/
+brevis-vm/scripts/
+brevis-vm/gnark/babybear/
+brevis-vm/gnark/babybear_verifier/
+brevis-vm/gnark/koalabear/
+brevis-vm/gnark/koalabear_verifier/
+brevis-vm/gnark/poseidon2/
+brevis-vm/gnark/sdk/
+brevis-vm/gnark/server/
+brevis-vm/gnark/utils/
+brevis-vm/perf/bench_apps/
+brevis-vm/perf/bench_data/
+brevis-vm/distributed-vm/
+brevis-vm/sdk/
+brevis-vm/docker/
