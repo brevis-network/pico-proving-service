@@ -5,8 +5,8 @@ services:
     image: pico-proving-service-gpu:latest
     container_name: pico-proving-service-gpu
     build:
-      context: ..
-      dockerfile: docker/Dockerfile
+      context: ../..
+      dockerfile: docker/gpu/Dockerfile
       args:
         EXPIRY_DURATION: ${EXPIRY_DURATION:-32d}
         BUILD_TIMESTAMP: ${BUILD_TIMESTAMP}
