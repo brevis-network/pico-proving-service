@@ -1,0 +1,37 @@
+.PHONY: build build-no-cache help
+
+# Build settings
+COMPOSE := $(shell command -v docker-compose 2>/dev/null || echo "docker compose")
+IMAGE_NAME := pico-proving-service-cpu
+IMAGE_TAG := latest
+
+help: ## Show build commands
+	@echo 'Usage: make -f Makefile.build [target]'
+	@echo ''
+	@echo 'Build Commands:'
+	@echo '  build           - Build Docker image with docker-compose'
+	@echo '  build-no-cache  - Build without cache'
+	@echo '  build-standalone - Build with Dockerfile directly'
+	@echo ''
+	@echo 'Examples:'
+	@echo '  make -f Makefile.build build'
+	@echo '  make -f Makefile.build build-no-cache'
+
+build: ## Build Docker image with docker-compose
+	@echo "Building $(IMAGE_NAME):$(IMAGE_TAG)..."
+	$(COMPOSE) build
+
+build-no-cache: ## Build Docker image without cache
+	@echo "Building $(IMAGE_NAME):$(IMAGE_TAG) (no cache)..."
+	$(COMPOSE) build --no-cache
+
+build-standalone: ## Build with Dockerfile directly (for standalone image)
+	@echo "Building $(IMAGE_NAME):$(IMAGE_TAG)..."
+	./build.sh
+
+save-image: ## Save Docker image to tar file
+	@echo "Saving Docker image to pico-proving-service-cpu.tar..."
+	docker save $(IMAGE_NAME):$(IMAGE_TAG) -o pico-proving-service-cpu.tar
+	@echo "Image saved successfully"
+	@ls -lh pico-proving-service-cpu.tar
+

@@ -5942,6 +5942,7 @@ dependencies = [
  "pico-vm",
  "prost",
  "rand 0.8.5",
+ "reqwest",
  "rsp-client-executor",
  "rsp-host-executor",
  "rsp-primitives",

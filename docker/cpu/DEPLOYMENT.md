@@ -23,7 +23,7 @@ newgrp docker
 - `docker-compose.yml` - Service orchestration
 - `Makefile` - Convenient commands
 - `run.sh` - Quick start script
-- `env.example` - Configuration template
+- `.env.example` - Configuration template
 - `download-gnark.sh` - Download gnark verification files
 
 ## Quick Start
@@ -33,11 +33,11 @@ newgrp docker
 docker load -i pico-proving-service-cpu.tar
 
 # 2. Download gnark verification files (required for on-chain proving)
-cd docker
+cd docker/cpu
 ./download-gnark.sh
 
 # 3. Configure environment
-cp env.example .env
+cp .env.example .env
 # Edit .env with your settings (PROVER_COUNT, NUM_THREADS, etc.)
 
 # 4. Start services
@@ -88,7 +88,7 @@ Edit `.env` to customize:
 | `RUST_LOG` | `debug` | Log level |
 | `VK_VERIFICATION` | `true` | Enable VK verification |
 
-See `env.example` for all options.
+See `.env.example` for all options.
 
 ## Data Persistence
 

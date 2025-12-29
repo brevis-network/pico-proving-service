@@ -36,7 +36,7 @@ sudo systemctl restart docker
 - `docker-compose.yml` - Service orchestration
 - `Makefile` - Convenient commands
 - `run.sh` - Quick start script
-- `env.example` - Configuration template
+- `.env.example` - Configuration template
 - `download-gnark.sh` - Download gnark verification files
 
 ## Quick Start
@@ -46,11 +46,11 @@ sudo systemctl restart docker
 docker load -i pico-proving-service-gpu.tar
 
 # 2. Download gnark verification files (required for on-chain proving)
-cd docker
+cd docker/gpu
 ./download-gnark.sh
 
 # 3. Configure environment
-cp env.example .env
+cp .env.example .env
 # Edit .env with your settings (PROVER_COUNT, GRPC_PORT, etc.)
 
 # 4. Start services
@@ -118,7 +118,7 @@ MEM_POOL_RESERVE_SIZE=21000000000
 PICO_GPU_MEM=4090
 ```
 
-See `env.example` for all options.
+See `.env.example` for all options.
 
 ## Data Persistence
 

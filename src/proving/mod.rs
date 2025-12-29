@@ -9,6 +9,7 @@ use tracing::info;
 
 mod emulator;
 pub mod gateway;
+pub mod gnark_sidecar;
 pub mod messages;
 pub mod onchain;
 pub mod worker;
