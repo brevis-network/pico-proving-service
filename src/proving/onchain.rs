@@ -1,4 +1,10 @@
-use crate::types::{EmbedSC, SC, Val};
+use crate::{
+    proving::gnark_sidecar::{
+        gnark_prover_running_sidecar, is_sidecar_mode, send_gnark_prove_task_sidecar,
+        wait_for_gnark_ready,
+    },
+    types::{EmbedSC, SC, Val},
+};
 use alloy_primitives::U256;
 use anyhow::{Result, anyhow};
 use pico_perf::common::{
@@ -25,30 +31,56 @@ use tracing::info;
 /// Ensure the gnark docker prover is up, generate on-chain witness JSON from the embed proof,
 /// send it to the dockerized prover, and return the resulting on-chain proof bytes.
 pub fn prove_embed_onchain(embed_proof: MetaProof<EmbedSC>) -> Result<Vec<u8>> {
-    // 1) Ensure dockerized gnark prover is running (recreate if necessary)
     let field = BenchField::KoalaBear;
-    let download_path = get_download_path(field);
-    ensure_gnark_downloads(field)?;
 
-    if !gnark_prover_running() {
-        info!("[onchain] gnark prover not running, (re)creating docker container");
-        recreate_gnark_prover(field, &download_path)?;
-        info!("[onchain] gnark prover is ready");
+    // Check if running in sidecar mode (Docker compose)
+    if is_sidecar_mode() {
+        info!("[onchain] running in sidecar mode, using gnark service from docker-compose");
+        ensure_gnark_downloads(field)?;
+
+        // Wait for sidecar to be ready
+        if !gnark_prover_running_sidecar() {
+            info!("[onchain] gnark sidecar not ready, waiting...");
+            wait_for_gnark_ready()?;
+        } else {
+            info!("[onchain] gnark sidecar is ready");
+        }
+
+        // Build the on-chain constraints and witness
+        let gnark_witness_json = build_onchain_witness_json(embed_proof)?;
+
+        // Send to gnark sidecar service
+        let proof_text = send_gnark_prove_task_sidecar(gnark_witness_json)?;
+        info!("[onchain] received gnark proof: {proof_text}");
+
+        let bytes = decode_gnark_proof_to_bytes(&proof_text);
+        Ok(bytes)
     } else {
-        info!("[onchain] gnark prover already running");
+        // Original local Docker mode
+        info!("[onchain] running in local mode");
+        let download_path = get_download_path(field);
+        ensure_gnark_downloads(field)?;
+
+        if !gnark_prover_running() {
+            info!("[onchain] gnark prover not running, (re)creating docker container");
+            recreate_gnark_prover(field, &download_path)?;
+            info!("[onchain] gnark prover is ready");
+        } else {
+            info!("[onchain] gnark prover already running");
+        }
+
+        // Build the on-chain constraints and witness, serialize to gnark witness JSON string
+        let gnark_witness_json = build_onchain_witness_json(embed_proof)?;
+        // std::fs::write("embed-witness.json", &gnark_witness_json).unwrap();
+
+        // Send to gnark docker server for proving
+        info!("[onchain] sending witness to dockerized gnark prover");
+        let proof_text = send_gnark_prove_task(gnark_witness_json)?;
+        info!("[onchain] received gnark proof: {proof_text}");
+
+        let bytes = decode_gnark_proof_to_bytes(&proof_text);
+        Ok(bytes)
     }
-
-    // 2) Build the on-chain constraints and witness, serialize to gnark witness JSON string
-    let gnark_witness_json = build_onchain_witness_json(embed_proof)?;
-    // std::fs::write("embed-witness.json", &gnark_witness_json).unwrap();
-
-    // 3) Send to gnark docker server for proving
-    info!("[onchain] sending witness to dockerized gnark prover");
-    let proof_text = send_gnark_prove_task(gnark_witness_json)?;
-    info!("[onchain] received gnark proof: {proof_text}");
-
-    let bytes = decode_gnark_proof_to_bytes(&proof_text);
-    Ok(bytes)
 }
 
 fn build_onchain_witness_json(embed_proof: MetaProof<EmbedSC>) -> Result<String> {
@@ -110,6 +142,12 @@ static ONCHAIN_DAEMON: OnceLock<()> = OnceLock::new();
 /// Start a background daemon that monitors the dockerized gnark prover and restarts it if needed.
 pub fn start_onchain_daemon() {
     if ONCHAIN_DAEMON.set(()).is_ok() {
+        // Skip daemon in sidecar mode - the gnark service is managed by docker-compose
+        if is_sidecar_mode() {
+            info!("[onchain] running in sidecar mode, skipping docker monitor daemon");
+            return;
+        }
+
         thread::spawn(|| {
             let field = BenchField::KoalaBear;
             let download_path = get_download_path(field);
