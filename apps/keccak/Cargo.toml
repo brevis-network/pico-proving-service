@@ -1,0 +1,11 @@
+[package]
+name = "keccak"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+# pico
+pico-sdk.workspace = true
+
+# misc
+tiny-keccak.workspace = true

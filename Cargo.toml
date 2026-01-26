@@ -35,6 +35,10 @@ path = "bin/test_client.rs"
 name = "test-reth-prove"
 path = "bin/test_reth_prove.rs"
 
+[[bin]]
+name = "test-aggregate-prove"
+path = "bin/test_aggregate_prove.rs"
+
 [dependencies]
 # pico
 pico-vm = { git = "https://github.com/brevis-network/pico.git", features = ["jemalloc", "nightly-features"], tag = "v1.2.2" }
@@ -87,6 +91,7 @@ tower-http = { version = "0.5", features = ["full"] }
 tracing = "0.1"
 url = "2.3"
 reqwest = { version = "0.12.9", features = ["blocking"] }
+itertools = "0.14.0"
 
 [build-dependencies]
 tonic-build = { version = "0.13", features = ["prost"] }

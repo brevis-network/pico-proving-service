@@ -35,6 +35,7 @@ impl From<PicoError> for EstimateCostResponse {
                     err,
                     cost: 0,
                     pv_digest: vec![],
+                    raw_pv_digest: vec![],
                 }
             }
             PicoError::InternalError(_) => {
@@ -46,6 +47,7 @@ impl From<PicoError> for EstimateCostResponse {
                     err,
                     cost: 0,
                     pv_digest: vec![],
+                    raw_pv_digest: vec![],
                 }
             }
         }
