@@ -67,6 +67,11 @@ impl App {
             info,
         }
     }
+
+    // get the vk digest
+    pub fn vk_digest(&self) -> [u32; 8] {
+        self.vk.hash_u32()
+    }
 }
 
 #[derive(Debug, FromRow)]

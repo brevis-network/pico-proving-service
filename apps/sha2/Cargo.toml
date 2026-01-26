@@ -1,0 +1,11 @@
+[package]
+name = "sha2"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+# pico
+pico-sdk.workspace = true
+
+# misc
+sha2.workspace = true

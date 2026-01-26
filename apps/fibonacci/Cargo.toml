@@ -1,0 +1,8 @@
+[package]
+name = "fibonacci"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+# pico
+pico-sdk.workspace = true

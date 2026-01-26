@@ -15,6 +15,12 @@ service ProverNetwork {
   // add a proving task
   rpc ProveTask(ProveTaskRequest) returns (ProveTaskResponse);
 
+  // add a proving sub-task; generate the intermediate combine phase proof
+  rpc ProveSubTask(ProveTaskRequest) returns (ProveTaskResponse);
+
+  // add a proving aggregate-task; generate the final on-chain proof
+  rpc ProveAggTask(ProveAggTaskRequest) returns (ProveTaskResponse);
+
   // try to fetch the proving result if complete
   rpc GetProvingResult(GetProvingResultRequest)
       returns (GetProvingResultResponse);
@@ -51,6 +57,8 @@ message RegisterAppResponse {
   ErrMsg err = 1;
   // application hash
   string app_id = 2;
+  // raw bytes of vk digest
+  repeated uint32 raw_vk_digest = 3;
 }
 
 message EstimateCostRequest {
@@ -67,6 +75,8 @@ message EstimateCostResponse {
   uint64 cost = 2;
   // public values digest
   bytes pv_digest = 3;
+  // raw bytes of public values digest
+  bytes raw_pv_digest = 4;
 }
 
 message ProveTaskRequest {
@@ -85,6 +95,20 @@ message ProveTaskResponse {
   ErrMsg err = 1;
 }
 
+message ProveAggTaskRequest {
+  // aggregate application hash
+  string app_id = 1;
+  // proving task ID, it should be unique for this application
+  string task_id = 2;
+  // serialized inputs
+  optional bytes inputs = 3;
+  // sub application inputs
+  repeated SubAppInput sub_app_inputs = 4;
+  // stage of the proving process
+  // it defaults to FINAL (groth16 proof) if unspecified
+  ProvingStage stage = 5;
+}
+
 message GetProvingResultRequest {
   // application hash
   string app_id = 1;
@@ -97,4 +121,21 @@ message GetProvingResultResponse {
   ErrMsg err = 1;
   // groth16 proof, it's valid if the result code is `OK`
   optional bytes proof = 2;
+}
+
+message SubAppInput {
+  // sub application ID
+  string app_id = 1;
+  // sub proof
+  bytes proof = 2;
+  // sub application raw public values digest
+  bytes raw_pv_digest = 3;
+}
+
+enum ProvingStage {
+  // proving to generate the final groth16 proof; default stage
+  FINAL = 0;
+  // proving to generate the intermediate combine proof;
+  // it could be used to aggregate as a sub-proof
+  INTERMEDIATE = 1;
 }

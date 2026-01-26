@@ -1,7 +1,8 @@
 use super::config::ServiceConfig;
 use crate::{
     EstimateCostRequest, EstimateCostResponse, GetProvingResultRequest, GetProvingResultResponse,
-    ProveTaskRequest, ProveTaskResponse, RegisterAppRequest, RegisterAppResponse,
+    ProveAggTaskRequest, ProveTaskRequest, ProveTaskResponse, RegisterAppRequest,
+    RegisterAppResponse,
     app_manager::AppManager,
     cost_estimation::estimate_cost,
     prover_network_server::{ProverNetwork, ProverNetworkServer},
@@ -113,7 +114,11 @@ impl ProverNetwork for GrpcService {
 
         info!("return RegisterAppResponse");
 
-        Ok(Response::new(RegisterAppResponse { err: None, app_id }))
+        Ok(Response::new(RegisterAppResponse {
+            err: None,
+            app_id,
+            raw_vk_digest: vec![],
+        }))
     }
 
     // estimate gas cost
@@ -144,6 +149,7 @@ impl ProverNetwork for GrpcService {
                 err: None,
                 cost: info.cost,
                 pv_digest: info.pv_digest.to_be_bytes_vec(),
+                raw_pv_digest: vec![],
             },
             Err(e) => e.into(),
         };
@@ -187,6 +193,19 @@ impl ProverNetwork for GrpcService {
         info!("return ProveTaskResponse");
 
         Ok(Response::new(ProveTaskResponse { err: None }))
+    }
+
+    async fn prove_sub_task(
+        &self,
+        _req: Request<ProveTaskRequest>,
+    ) -> Result<Response<ProveTaskResponse>, Status> {
+        todo!()
+    }
+    async fn prove_agg_task(
+        &self,
+        _req: Request<ProveAggTaskRequest>,
+    ) -> Result<Response<ProveTaskResponse>, Status> {
+        todo!()
     }
 
     // try to fetch the proving result if complete
