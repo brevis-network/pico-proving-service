@@ -18,6 +18,9 @@ service ProverNetwork {
   // try to fetch the proving result if complete
   rpc GetProvingResult(GetProvingResultRequest)
       returns (GetProvingResultResponse);
+
+  // verify an embed proof
+  rpc VerifyProof(VerifyProofRequest) returns (VerifyProofResponse);
 }
 
 message ErrMsg {
@@ -97,4 +100,18 @@ message GetProvingResultResponse {
   ErrMsg err = 1;
   // groth16 proof, it's valid if the result code is `OK`
   optional bytes proof = 2;
+}
+
+message VerifyProofRequest {
+  // application hash
+  string app_id = 1;
+  // serialized embed proof
+  bytes proof = 2;
+}
+
+message VerifyProofResponse {
+  // common result
+  ErrMsg err = 1;
+  // true if the proof is valid
+  bool verified = 2;
 }

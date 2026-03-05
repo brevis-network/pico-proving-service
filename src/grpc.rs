@@ -2,6 +2,7 @@ use super::config::ServiceConfig;
 use crate::{
     EstimateCostRequest, EstimateCostResponse, GetProvingResultRequest, GetProvingResultResponse,
     ProveTaskRequest, ProveTaskResponse, RegisterAppRequest, RegisterAppResponse,
+    VerifyProofRequest, VerifyProofResponse,
     app_manager::AppManager,
     cost_estimation::estimate_cost,
     prover_network_server::{ProverNetwork, ProverNetworkServer},
@@ -242,5 +243,18 @@ impl ProverNetwork for GrpcService {
             err: None,
             proof: proof.map(|arc_proof| arc_proof.to_vec()),
         }))
+    }
+
+    // verify an embed proof (stub - not implemented)
+    async fn verify_proof(
+        &self,
+        _req: Request<VerifyProofRequest>,
+    ) -> Result<Response<VerifyProofResponse>, Status> {
+        info!("receive VerifyProofRequest (stub implementation)");
+
+        // Stub implementation - returns unimplemented
+        Err(Status::unimplemented(
+            "VerifyProof is not implemented on this server",
+        ))
     }
 }

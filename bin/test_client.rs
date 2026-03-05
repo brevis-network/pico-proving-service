@@ -2,8 +2,8 @@ use anyhow::Result;
 use clap::{Args, Parser, Subcommand};
 use dotenvy::dotenv;
 use pico_proving_service::{
-    EstimateCostRequest, GetProvingResultRequest, ProveTaskRequest, RegisterAppRequest,
-    prover_network_client::ProverNetworkClient,
+    prover_network_client::ProverNetworkClient, EstimateCostRequest, GetProvingResultRequest,
+    ProveTaskRequest, RegisterAppRequest, VerifyProofRequest,
 };
 use pico_vm::machine::logger::setup_logger;
 use std::{fs, path::PathBuf};
@@ -45,6 +45,9 @@ enum Command {
 
     #[command(about = "Fetch the proving result if complete")]
     GetProvingResult(GetProvingResultCommand),
+
+    #[command(about = "Verify an embed proof")]
+    VerifyProof(VerifyProofCommand),
 }
 
 #[derive(Args)]
@@ -87,6 +90,21 @@ struct GetProvingResultCommand {
 
     #[arg(long, help = "Proving task unique ID")]
     task_id: String,
+
+    #[arg(
+        long,
+        help = "Output file path to save proof (default: proof_{task_id}.bin)"
+    )]
+    output: Option<PathBuf>,
+}
+
+#[derive(Args)]
+struct VerifyProofCommand {
+    #[arg(long, help = "Application unique ID")]
+    app_id: String,
+
+    #[arg(long, help = "Proof file path")]
+    proof: PathBuf,
 }
 
 #[tokio::main]
@@ -152,12 +170,37 @@ async fn main() -> Result<()> {
         }
         Command::GetProvingResult(cmd) => {
             let req = GetProvingResultRequest {
-                app_id: cmd.app_id,
-                task_id: cmd.task_id,
+                app_id: cmd.app_id.clone(),
+                task_id: cmd.task_id.clone(),
             };
             let res = client.get_proving_result(req).await?.into_inner();
 
-            info!("GetProvingResult: err={:?}, proof={:?}", res.err, res.proof);
+            // Save proof to file if it exists
+            if let Some(proof) = res.proof {
+                let output_path = cmd
+                    .output
+                    .unwrap_or_else(|| PathBuf::from(format!("proof_{}.bin", cmd.task_id)));
+                fs::write(&output_path, &proof)?;
+                info!(
+                    "GetProvingResult: err={:?}, proof saved to {:?} ({} bytes)",
+                    res.err,
+                    output_path,
+                    proof.len()
+                );
+            } else {
+                info!("GetProvingResult: err={:?}, proof=None", res.err);
+            }
+        }
+        Command::VerifyProof(cmd) => {
+            let proof = fs::read(&cmd.proof)?;
+
+            let req = VerifyProofRequest {
+                app_id: cmd.app_id,
+                proof,
+            };
+            let res = client.verify_proof(req).await?.into_inner();
+
+            info!("VerifyProof: err={:?}, verified={}", res.err, res.verified);
         }
     }
 
