@@ -1,7 +1,8 @@
 use super::config::ServiceConfig;
 use crate::{
     EstimateCostRequest, EstimateCostResponse, GetProvingResultRequest, GetProvingResultResponse,
-    ProveTaskRequest, ProveTaskResponse, RegisterAppRequest, RegisterAppResponse,
+    ProveTaskRequest, ProveTaskResponse, ProveVeraTaskRequest, RegisterAppRequest,
+    RegisterAppResponse, VerifyProofResponse, VerifyVeraProofRequest,
     app_manager::AppManager,
     cost_estimation::estimate_cost,
     prover_network_server::{ProverNetwork, ProverNetworkServer},
@@ -241,6 +242,33 @@ impl ProverNetwork for GrpcService {
         Ok(Response::new(GetProvingResultResponse {
             err: None,
             proof: proof.map(|arc_proof| arc_proof.to_vec()),
+            guest_output: None,
         }))
+    }
+
+    // Submit a Vera proving task
+    async fn prove_vera_task(
+        &self,
+        req: Request<ProveVeraTaskRequest>,
+    ) -> Result<Response<ProveTaskResponse>, Status> {
+        info!("receive ProveVeraTaskRequest");
+
+        // Stub implementation - returns unimplemented
+        Err(Status::unimplemented(
+            "ProveVeraTask is not implemented on this server",
+        ))
+    }
+
+    // Verify a Vera proof
+    async fn verify_vera_proof(
+        &self,
+        req: Request<VerifyVeraProofRequest>,
+    ) -> Result<Response<VerifyProofResponse>, Status> {
+        info!("receive VerifyVeraProofRequest");
+
+        // Stub implementation - returns unimplemented
+        Err(Status::unimplemented(
+            "VerifyVeraProof is not implemented on this server",
+        ))
     }
 }

@@ -15,9 +15,15 @@ service ProverNetwork {
   // add a proving task
   rpc ProveTask(ProveTaskRequest) returns (ProveTaskResponse);
 
+  // add a vera proving task
+  rpc ProveVeraTask(ProveVeraTaskRequest) returns (ProveTaskResponse);
+
   // try to fetch the proving result if complete
   rpc GetProvingResult(GetProvingResultRequest)
       returns (GetProvingResultResponse);
+
+  // verify an embed proof
+  rpc VerifyVeraProof(VerifyVeraProofRequest) returns (VerifyProofResponse);
 }
 
 message ErrMsg {
@@ -78,6 +84,8 @@ message ProveTaskRequest {
   optional bytes inputs = 3;
   // use GPU for proving (default: false, use CPU)
   optional bool use_gpu = 4;
+  // pre-computed guest output (for Vera tasks)
+  optional VeraOutput guest_output = 5;
 }
 
 message ProveTaskResponse {
@@ -97,4 +105,100 @@ message GetProvingResultResponse {
   ErrMsg err = 1;
   // groth16 proof, it's valid if the result code is `OK`
   optional bytes proof = 2;
+  // vera output (computed from GuestInput using same logic as ELF)
+  optional VeraOutput guest_output = 3;
+}
+
+message VerifyVeraProofRequest {
+  // application hash
+  string app_id = 1;
+  // serialized embed proof
+  bytes proof = 2;
+  // vera output for verification
+  VeraOutput output = 3;
+}
+
+message VerifyProofResponse {
+  // common result
+  ErrMsg err = 1;
+  // true if the proof is valid
+  bool verified = 2;
+}
+
+message ProveVeraTaskRequest {
+  // application hash
+  string app_id = 1;
+  // proving task ID, it should be unique for this application
+  string task_id = 2;
+  // vera input
+  VeraInput input = 3;
+}
+
+message VeraInput {
+  // JPEG bytes before the JUMBF manifest (APP11 markers removed).
+  // For images without C2PA: the entire JPEG file.
+  bytes jpeg_pre_manifest = 1;
+  // JPEG bytes after the JUMBF manifest (APP11 markers removed).
+  // For images without C2PA: empty.
+  bytes jpeg_post_manifest = 2;
+  // Ordered list of transforms to apply inside the ZK circuit.
+  repeated Transform transforms = 3;
+  // COSE protected headers (raw CBOR bytes from the COSE_Sign1 structure).
+  bytes c2pa_protected_headers = 4;
+  // C2PA claim CBOR (the COSE payload).
+  bytes c2pa_claim_cbor = 5;
+  // ECDSA P-256 signature r component (32 bytes, big-endian scalar).
+  bytes c2pa_sig_r = 6;
+  // ECDSA P-256 signature s component (32 bytes, big-endian scalar).
+  bytes c2pa_sig_s = 7;
+  // Uncompressed EC P-256 public key (65 bytes: 0x04 || X || Y).
+  bytes c2pa_pubkey = 8;
+  // Raw JUMBF box content of the c2pa.hash.data assertion.
+  bytes c2pa_data_hash_assertion_raw = 9;
+  // Additional byte ranges within jpeg_pre_manifest to exclude from the file hash.
+  // Format: (start_offset_in_pre, length) pairs.
+  repeated C2paPreHashExclusion c2pa_pre_hash_exclusions = 10;
+}
+
+message C2paPreHashExclusion {
+  uint32 start_offset = 1;
+  uint32 length = 2;
+}
+
+message CropTransform {
+  uint32 x = 1;
+  uint32 y = 2;
+  uint32 width = 3;
+  uint32 height = 4;
+}
+
+message BrightenTransform { int32 value = 1; }
+
+message GrayscaleTransform {}
+
+message Transform {
+  oneof transform {
+    CropTransform crop = 1;
+    BrightenTransform brighten = 2;
+    GrayscaleTransform grayscale = 3;
+  }
+}
+
+enum TransformKind {
+  TRANSFORM_KIND_CROP = 0;
+  TRANSFORM_KIND_BRIGHTEN = 1;
+  TRANSFORM_KIND_GRAYSCALE = 2;
+}
+
+message VeraOutput {
+  // SHA-256([width_be][height_be][original_rgba]) — the authoritative commitment
+  // over the original pixel buffer.
+  bytes original_hash = 1;
+  // SHA-256([width_be][height_be][output_rgba]) — binds proof to the edited image.
+  bytes output_hash = 2;
+  // Which transform kinds were applied (no parameters — editorial privacy preserved).
+  repeated TransformKind transforms_applied = 3;
+  // Uncompressed EC P-256 public key (65 bytes: 0x04 || X || Y).
+  // The verifier checks this chains to a trusted root certificate.
+  bytes c2pa_pubkey = 4;
 }
