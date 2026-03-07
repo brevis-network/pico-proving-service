@@ -149,6 +149,7 @@ async fn main() -> Result<()> {
                 task_id: format!("task-block-{block_number}"),
                 inputs: Some(block_inputs.clone()),
                 use_gpu: Some(cli.use_gpu),
+                guest_output: None,
             },
         )
         .await?;

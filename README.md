@@ -235,6 +235,29 @@ RUST_LOG=debug cargo run -r --bin test-client prove-task --app-id APP_ID --task-
 RUST_LOG=debug cargo run -r --bin test-client get-proving-result --app-id APP_ID --task-id reth-188
 ```
 
+### Submit a Vera proving task
+
+Submit a Vera proving task using a GuestInput JSON file (generated from `bv prove --emulate`).
+This will save both the proof and the computed VeraOutput to files:
+```
+RUST_LOG=debug cargo run -r --bin test-client prove-vera \
+  --app-id APP_ID \
+  --task-id TASK_ID \
+  --input /Users/eason/brevis-vera/debug_guest_input.json \
+  --output proof_TASK_ID.bin \
+  --guest-output guest_output_TASK_ID.json
+```
+
+### Verify a Vera proof
+
+Verify a Vera proof using the saved proof file and GuestOutput JSON file:
+```
+RUST_LOG=debug cargo run -r --bin test-client verify-vera \
+  --app-id APP_ID \
+  --proof proof_TASK_ID.bin \
+  --output guest_output_TASK_ID.json
+```
+
 ### Normalize ETH input
 
 ```
