@@ -1,23 +1,24 @@
 use super::config::ServiceConfig;
 use crate::{
-    EstimateCostRequest, EstimateCostResponse, GetProvingResultRequest, GetProvingResultResponse,
-    ProveTaskRequest, ProveTaskResponse, RegisterAppRequest, RegisterAppResponse,
     app_manager::AppManager,
     cost_estimation::estimate_cost,
     prover_network_server::{ProverNetwork, ProverNetworkServer},
     proving_queue::{ProvingKey, ProvingOutputs, ProvingTask},
     types::DbPool,
     utils::auth::AuthConfig,
+    EstimateCostRequest, EstimateCostResponse, GetProvingResultRequest, GetProvingResultResponse,
+    ProveTaskRequest, ProveTaskResponse, RegisterAppRequest, RegisterAppResponse,
 };
 use anyhow::Result;
 use crossbeam::channel::Sender;
 use std::sync::Arc;
 use tokio::{signal::ctrl_c, task::JoinHandle};
 use tonic::{
-    Request, Response, Status, async_trait,
+    async_trait,
     codec::CompressionEncoding,
-    service::{LayerExt, interceptor::InterceptedService},
+    service::{interceptor::InterceptedService, LayerExt},
     transport::Server,
+    Request, Response, Status,
 };
 use tonic_web::GrpcWebLayer;
 use tower::ServiceBuilder;
@@ -144,6 +145,7 @@ impl ProverNetwork for GrpcService {
                 err: None,
                 cost: info.cost,
                 pv_digest: info.pv_digest.to_be_bytes_vec(),
+                pv_stream: vec![],
             },
             Err(e) => e.into(),
         };

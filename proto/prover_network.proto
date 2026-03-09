@@ -67,6 +67,8 @@ message EstimateCostResponse {
   uint64 cost = 2;
   // public values digest
   bytes pv_digest = 3;
+  // public values stream
+  bytes pv_stream = 4;
 }
 
 message ProveTaskRequest {
