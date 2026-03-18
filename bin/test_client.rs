@@ -129,8 +129,8 @@ async fn main() -> Result<()> {
             let res = client.estimate_cost(req).await?.into_inner();
 
             info!(
-                "EstimateCost: err={:?}, cost={}, pv_digest={:?}",
-                res.err, res.cost, res.pv_digest
+                "EstimateCost: err={:?}, cost={}, pv_digest={:?}, pv_stream={:?}",
+                res.err, res.cost, res.pv_digest, res.pv_stream,
             );
         }
         Command::ProveTask(cmd) => {
