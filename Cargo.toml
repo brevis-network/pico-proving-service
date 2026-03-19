@@ -37,8 +37,8 @@ path = "bin/test_reth_prove.rs"
 
 [dependencies]
 # pico
-pico-vm = { git = "https://github.com/brevis-network/pico.git", features = ["jemalloc", "nightly-features"], tag = "v1.2.2" }
-pico-perf = { git = "https://github.com/brevis-network/pico.git", tag = "v1.2.2" }
+pico-vm = { git = "https://github.com/brevis-network/pico.git", features = ["jemalloc", "nightly-features"], branch = "precompilep-analysis" }
+pico-perf = { git = "https://github.com/brevis-network/pico.git", branch = "precompilep-analysis" }
 
 # rsp
 rsp-client-executor = { git = "https://github.com/brevis-network/rsp.git", rev = "a005ee4" }

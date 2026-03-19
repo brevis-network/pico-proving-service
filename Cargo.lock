@@ -5867,7 +5867,7 @@ dependencies = [
 [[package]]
 name = "pico-derive"
 version = "1.2.2"
-source = "git+https://github.com/brevis-network/pico.git?tag=v1.2.2#57ff6c5c0755f38bfa55a54eda053eae664ebcd2"
+source = "git+https://github.com/brevis-network/pico.git?branch=precompilep-analysis#1c23e466ecad8d963be82dd4ddc0d448aa81d5bd"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -5886,7 +5886,7 @@ dependencies = [
 [[package]]
 name = "pico-patch-libs"
 version = "1.2.2"
-source = "git+https://github.com/brevis-network/pico.git?tag=v1.2.2#57ff6c5c0755f38bfa55a54eda053eae664ebcd2"
+source = "git+https://github.com/brevis-network/pico.git?branch=precompilep-analysis#1c23e466ecad8d963be82dd4ddc0d448aa81d5bd"
 dependencies = [
  "bincode",
  "serde",
@@ -5895,7 +5895,7 @@ dependencies = [
 [[package]]
 name = "pico-perf"
 version = "1.2.2"
-source = "git+https://github.com/brevis-network/pico.git?tag=v1.2.2#57ff6c5c0755f38bfa55a54eda053eae664ebcd2"
+source = "git+https://github.com/brevis-network/pico.git?branch=precompilep-analysis#1c23e466ecad8d963be82dd4ddc0d448aa81d5bd"
 dependencies = [
  "anyhow",
  "bincode",
@@ -5964,7 +5964,7 @@ dependencies = [
 [[package]]
 name = "pico-sdk"
 version = "1.2.2"
-source = "git+https://github.com/brevis-network/pico.git?tag=v1.2.2#57ff6c5c0755f38bfa55a54eda053eae664ebcd2"
+source = "git+https://github.com/brevis-network/pico.git?branch=precompilep-analysis#1c23e466ecad8d963be82dd4ddc0d448aa81d5bd"
 dependencies = [
  "anyhow",
  "bincode",
@@ -5990,7 +5990,7 @@ dependencies = [
 [[package]]
 name = "pico-vm"
 version = "1.2.2"
-source = "git+https://github.com/brevis-network/pico.git?tag=v1.2.2#57ff6c5c0755f38bfa55a54eda053eae664ebcd2"
+source = "git+https://github.com/brevis-network/pico.git?branch=precompilep-analysis#1c23e466ecad8d963be82dd4ddc0d448aa81d5bd"
 dependencies = [
  "anyhow",
  "arrayref",
