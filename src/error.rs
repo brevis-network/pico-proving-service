@@ -36,6 +36,7 @@ impl From<PicoError> for EstimateCostResponse {
                     cost: 0,
                     pv_digest: vec![],
                     pv_stream: vec![],
+                    precompile_counts: Default::default(),
                 }
             }
             PicoError::InternalError(_) => {
@@ -48,6 +49,7 @@ impl From<PicoError> for EstimateCostResponse {
                     cost: 0,
                     pv_digest: vec![],
                     pv_stream: vec![],
+                    precompile_counts: Default::default(),
                 }
             }
         }

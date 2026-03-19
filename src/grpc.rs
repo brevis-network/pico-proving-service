@@ -140,12 +140,15 @@ impl ProverNetwork for GrpcService {
             req.inputs.as_deref(),
             self.cfg.max_emulation_cycles,
             true,
+            req.raw_input.unwrap_or(false),
         ) {
             Ok(info) => EstimateCostResponse {
                 err: None,
                 cost: info.cost,
                 pv_digest: info.pv_digest.to_be_bytes_vec(),
                 pv_stream: vec![],
+                pv_stream: info.pv_stream,
+                precompile_counts: info.precompile_counts.into_iter().collect(),
             },
             Err(e) => e.into(),
         };

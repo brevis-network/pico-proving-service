@@ -105,7 +105,7 @@ fn generate_pv_digest(elf_file_path: &Path, inputs: &[u8]) -> Result<String> {
 
     let app = App::new(&elf, None);
 
-    let info = estimate_cost(app.program, app.pk, app.vk, Some(inputs), None, false)?;
+    let info = estimate_cost(app.program, app.pk, app.vk, Some(inputs), None, false, false)?;
     let pv_digest = info.pv_digest;
 
     Ok(format!("0x{pv_digest:064x}"))

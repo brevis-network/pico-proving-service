@@ -58,6 +58,9 @@ message EstimateCostRequest {
   string app_id = 1;
   // serialized inputs
   optional bytes inputs = 2;
+  // if true, treat inputs as raw bytes (use write_slice);
+  // if false/absent, treat inputs as bincode-serialized EmulatorStdinBuilder
+  optional bool raw_input = 3;
 }
 
 message EstimateCostResponse {
@@ -69,6 +72,8 @@ message EstimateCostResponse {
   bytes pv_digest = 3;
   // public values stream
   bytes pv_stream = 4;
+  // precompile invocation counts (key: syscall name e.g. "SHA_COMPRESS", value: count)
+  map<string, uint64> precompile_counts = 5;
 }
 
 message ProveTaskRequest {

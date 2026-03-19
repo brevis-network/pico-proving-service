@@ -27,3 +27,5 @@ tmp/
 gnark_downloads/
 groth16_witness.json
 constraints.json
+
+fixtures/24000*.bin

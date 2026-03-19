@@ -29,7 +29,7 @@ async fn main() -> Result<()> {
     };
 
     let app = App::new(&elf, None);
-    let info = estimate_cost(app.program, app.pk, app.vk, inputs.as_deref(), None, false)?;
+    let info = estimate_cost(app.program, app.pk, app.vk, inputs.as_deref(), None, false, false)?;
 
     let cycles = info.total_cycles;
     info!("Emulation cycles: {cycles}");
