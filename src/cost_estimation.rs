@@ -77,7 +77,6 @@ pub fn estimate_cost(
         let (reports, total_cycles, pv_stream) =
             emulate_snapshot_pipeline(&witness, move |rec, _done| {
                 let mut counts = counts_ref.lock().unwrap();
-                // TODO: make events public
                 for (syscall_code, events) in rec.precompile_events.events.iter() {
                     if !events.is_empty() {
                         *counts.entry(format!("{:?}", syscall_code)).or_insert(0) +=
