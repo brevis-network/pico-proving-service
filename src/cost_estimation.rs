@@ -21,8 +21,11 @@ use sha2::{Digest, Sha256};
 use std::{panic, sync::Arc};
 
 pub struct EstimatedInfo {
+    // estimated gas cost
     pub cost: u64,
+    // pico emulation cycles
     pub total_cycles: u64,
+    // generated public values digest
     pub pv_digest: U256,
 }
 

@@ -1,7 +1,10 @@
 use anyhow::Result;
 use clap::Parser;
 use dotenvy::dotenv;
-use pico_proving_service::{app_manager::App, cost_estimation::estimate_cost};
+use pico_proving_service::{
+    app_manager::App,
+    cost_estimation::{EstimatedInfo, estimate_cost},
+};
 use pico_vm::machine::logger::setup_logger;
 use std::{fs, path::PathBuf};
 use tracing::info;
@@ -31,10 +34,15 @@ async fn main() -> Result<()> {
     let app = App::new(&elf, None);
     let info = estimate_cost(app.program, app.pk, app.vk, inputs.as_deref(), None, false)?;
 
-    let cycles = info.total_cycles;
-    info!("Emulation cycles: {cycles}");
+    let EstimatedInfo {
+        cost,
+        total_cycles,
+        pv_digest,
+    } = info;
 
-    let pv_digest = info.pv_digest;
+    info!("Estimated gas cost: {cost}");
+    info!("Emulation cycles: {total_cycles}");
+
     let pv_digest = format!("0x{:064x}", pv_digest);
     info!("Generated pv_digest: {pv_digest}");
 
